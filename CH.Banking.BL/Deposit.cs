@@ -14,6 +14,8 @@ namespace CH.Banking.BL
 
         public DateTime Date { get; set; }
 
+        //created constructor in order to be able to save the financial info
+
         public Deposit() { }
         public Deposit(int id, double amount, DateTime date)
         {

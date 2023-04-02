@@ -32,7 +32,7 @@ namespace CH.Banking.BL
         public int CalculateAge()
         {
             TimeSpan span = DateTime.Now - DateOfBirth;
-            return (int)(span.TotalDays / 365.25);
+            return (int)(span.TotalDays / 365);
         }
 
         

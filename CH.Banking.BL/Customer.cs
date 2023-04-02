@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 
 namespace CH.Banking.BL
 {
+
+    //Customer dervies from person
+    //aka gets all the things a person has
     public class Customer : Person
     {
         public int CustomerID { get; set; }
 
-        public List<Withdrawal> Withdrawls { get; set; } = new List<Withdrawal>();
+        //added this here because each customer has withdrawals and deposits
+
+        //but not ever person has them 
+
+        public List<Withdrawal> Withdrawals { get; set; } = new List<Withdrawal>();
 
         public List<Deposit> Deposit { get; set; } = new List<Deposit>();
     }

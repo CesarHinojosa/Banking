@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace CH.Banking.BL
 {
+    //Without List<Customer>We cannot "save" the records or add new customers
     public class CustomerCollection : List<Customer>
     {
         public void LoadTestCustomers()
         {
 
             //can't add age because it is only a getter no setter
+
+            //customer objects down below
             Customer customer;
 
             customer = new Customer();

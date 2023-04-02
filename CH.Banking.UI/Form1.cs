@@ -15,14 +15,14 @@ namespace CH.Banking.UI
 
             if (customers.Count > 0)
             {
-                RebindCustomers();
+               RebindCustomers();
             }
         }
 
         //adds customers to the list 
         private void RebindCustomers()
         {
-            lstCustomers.DataSource = null; // unbind
+            //lstCustomers.DataSource = null; // unbind
             lstCustomers.DataSource = customers; // re-bind
 
         }
@@ -30,10 +30,10 @@ namespace CH.Banking.UI
         //two different methods would have worked but easier wiht one
         private void RebindFinancial(List<Withdrawal> withdrawals, List<Deposit> deposits)
         {
-            DGVWithdrawals.DataSource = null;
+            //DGVWithdrawals.DataSource = null;
             DGVWithdrawals.DataSource = withdrawals;
 
-            DGVDeposits.DataSource = null;
+            //DGVDeposits.DataSource = null;
             DGVDeposits.DataSource = deposits;
         }
 
@@ -42,7 +42,7 @@ namespace CH.Banking.UI
             Customer? selectedCustomer = lstCustomers.SelectedItem as Customer;
             if (selectedCustomer != null)
             {
-
+                //this is what populates the text boxes when a customer is selected
                 txtID.Text = selectedCustomer.CustomerID.ToString();
                 txtFirstName.Text = selectedCustomer.FirstName;
                 txtLastName.Text = selectedCustomer.LastName;
@@ -51,6 +51,7 @@ namespace CH.Banking.UI
                 txtAge.Text = selectedCustomer.Age.ToString();
 
                 //adds the financial information when the selected customer is selected
+                //this is what populates the DGV down below when the customer is selected 
                 RebindFinancial(selectedCustomer.Withdrawls, selectedCustomer.Deposit);
 
             }
