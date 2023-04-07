@@ -15,14 +15,16 @@ namespace CH.Banking.UI
 
             if (customers.Count > 0)
             {
-               RebindCustomers();
+                RebindCustomers();
             }
         }
+        public bool NewPerson = false;
 
         //adds customers to the list 
         private void RebindCustomers()
         {
-            //lstCustomers.DataSource = null; // unbind
+            //need the null because otherwise it won't update the customer on the interface
+            lstCustomers.DataSource = null; // unbind
             lstCustomers.DataSource = customers; // re-bind
 
         }
@@ -43,7 +45,8 @@ namespace CH.Banking.UI
             if (selectedCustomer != null)
             {
                 //this is what populates the text boxes when a customer is selected
-                txtID.Text = selectedCustomer.CustomerID.ToString();
+                //txtID.Text = selectedCustomer.CustomerID.ToString();
+
                 txtFirstName.Text = selectedCustomer.FirstName;
                 txtLastName.Text = selectedCustomer.LastName;
                 txtSSN.Text = selectedCustomer.SSN;
@@ -52,9 +55,46 @@ namespace CH.Banking.UI
 
                 //adds the financial information when the selected customer is selected
                 //this is what populates the DGV down below when the customer is selected 
-                RebindFinancial(selectedCustomer.Withdrawls, selectedCustomer.Deposit);
+                RebindFinancial(selectedCustomer.Withdrawals, selectedCustomer.Deposit);
 
             }
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            
+            Customer? selectedCustomer = lstCustomers.SelectedItem as Customer;
+            if (selectedCustomer != null && NewPerson == false)
+            {
+                selectedCustomer.FirstName = txtFirstName.Text;
+                selectedCustomer.LastName = txtLastName.Text;
+                selectedCustomer.SSN = txtSSN.Text;
+                selectedCustomer.DateOfBirth = DateTime.Parse(txtBirthDate.Text);
+
+                RebindCustomers(); 
+            }
+            else if (btnNew_Click != null)
+            {
+                //ToDo: Need something for ID here
+                Customer customer = new Customer();
+                customer.FirstName = txtFirstName.Text;
+                customer.LastName = txtLastName.Text;
+                customer.SSN = txtSSN.Text;
+                customer.DateOfBirth = DateTime.Parse(txtBirthDate.Text);
+                customers.Add(customer);
+                RebindCustomers();
+            }
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            txtID.Text = "";
+            txtFirstName.Text = "";
+            txtLastName.Text = "";
+            txtSSN.Text = "";
+            txtBirthDate.Text = "";
+            txtAge.Text = "";
+            NewPerson = true;
         }
     }
 }
