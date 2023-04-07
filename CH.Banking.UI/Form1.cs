@@ -1,4 +1,5 @@
 using CH.Banking.BL;
+using CH.Banking.PL;
 
 namespace CH.Banking.UI
 {
@@ -62,8 +63,10 @@ namespace CH.Banking.UI
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            
+
             Customer? selectedCustomer = lstCustomers.SelectedItem as Customer;
+            //important here is the bool NewPerson 
+            //without the bool it would adjust the customer and add a new customer
             if (selectedCustomer != null && NewPerson == false)
             {
                 selectedCustomer.FirstName = txtFirstName.Text;
@@ -71,7 +74,7 @@ namespace CH.Banking.UI
                 selectedCustomer.SSN = txtSSN.Text;
                 selectedCustomer.DateOfBirth = DateTime.Parse(txtBirthDate.Text);
 
-                RebindCustomers(); 
+                RebindCustomers();
             }
             else if (btnNew_Click != null)
             {
@@ -88,13 +91,64 @@ namespace CH.Banking.UI
 
         private void btnNew_Click(object sender, EventArgs e)
         {
+            //all the real work is dont in the update button
+            //makes the appereance that a new customer was added
             txtID.Text = "";
             txtFirstName.Text = "";
             txtLastName.Text = "";
             txtSSN.Text = "";
             txtBirthDate.Text = "";
             txtAge.Text = "";
+            //THE BOOL IS IMPORTANT
             NewPerson = true;
+        }
+
+        private void btnSaveToXML_Click(object sender, EventArgs e)
+        {
+            //Save to the customer.XML File
+            customers.SaveToXML();
+        }
+
+        private void btnLoadFromXML_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Once the customers are added must rebind in order for the to show
+                Type type = typeof(CustomerCollection);
+                CustomerCollection? temp = DataAccess.LoadXML(type) as CustomerCollection;
+                customers = (temp != null) ? temp : new CustomerCollection();
+                RebindCustomers();
+
+            }
+            catch
+            {
+                customers = new CustomerCollection();
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            //Message Displayed, Message Title, Buttons Displayed
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete?", "Deleting Customer", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                Customer? selectedCustomer = lstCustomers.SelectedItem as Customer;
+                if (selectedCustomer != null)
+                {
+                    //make the textboxes empty as the customer is removed
+                    txtID.Text = "";
+                    txtFirstName.Text = "";
+                    txtLastName.Text = "";
+                    txtSSN.Text = "";
+                    txtBirthDate.Text = "";
+                    txtAge.Text = "";
+                    customers.Remove(selectedCustomer);
+                    //rebinds the list so that the deleted customer does not show up anymore
+                    RebindCustomers();
+                }
+            }
+            //do nothing just close
+            else { }
         }
     }
 }

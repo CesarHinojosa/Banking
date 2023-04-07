@@ -240,6 +240,7 @@
             btnDelete.TabIndex = 5;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnLoadFromXML
             // 
@@ -249,6 +250,7 @@
             btnLoadFromXML.TabIndex = 6;
             btnLoadFromXML.Text = "Load from XML";
             btnLoadFromXML.UseVisualStyleBackColor = true;
+            btnLoadFromXML.Click += btnLoadFromXML_Click;
             // 
             // btnSaveToXML
             // 
@@ -258,6 +260,7 @@
             btnSaveToXML.TabIndex = 6;
             btnSaveToXML.Text = "Save to XML";
             btnSaveToXML.UseVisualStyleBackColor = true;
+            btnSaveToXML.Click += btnSaveToXML_Click;
             // 
             // Form1
             // 

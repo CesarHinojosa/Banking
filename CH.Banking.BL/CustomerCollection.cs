@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CH.Banking.PL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,11 @@ namespace CH.Banking.BL
     //Without List<Customer>We cannot "save" the records or add new customers
     public class CustomerCollection : List<Customer>
     {
+        //Creating the xml file name
+        public CustomerCollection() 
+        {
+            DataAccess.XMLFilePath = "customers.xml";
+        }
         public void LoadTestCustomers()
         {
 
@@ -76,6 +82,16 @@ namespace CH.Banking.BL
             customer.Deposit.Add(new Deposit(18, 78000, new DateTime(2023, 3, 22)));
 
             Add(customer);
+        }
+
+        public void SaveToXML()
+        {
+            // this part (  typeof(CustomerCollection) ) is the type of object we want to save to XML
+
+            // the (this) keyword is saying the acutal object we are saving
+
+            //"save the current instance of this class (whatever class this code is in) to XML, using the CustomerCollection class as the type of object to save".
+            DataAccess.SaveXML(typeof(CustomerCollection), this);
         }
     }
 }
