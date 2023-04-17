@@ -24,6 +24,8 @@ namespace CH.Banking.UI
         //adds customers to the list 
         private void RebindCustomers()
         {
+           // CustomerCollection customerCollection = new CustomerCollection();
+            
             //need the null because otherwise it won't update the customer on the interface
             lstCustomers.DataSource = null; // unbind
             lstCustomers.DataSource = customers; // re-bind
@@ -46,7 +48,7 @@ namespace CH.Banking.UI
             if (selectedCustomer != null)
             {
                 //this is what populates the text boxes when a customer is selected
-                //txtID.Text = selectedCustomer.CustomerID.ToString();
+                txtID.Text = selectedCustomer.CustomerID.ToString();
 
                 txtFirstName.Text = selectedCustomer.FirstName;
                 txtLastName.Text = selectedCustomer.LastName;
@@ -78,14 +80,27 @@ namespace CH.Banking.UI
             }
             else if (btnNew_Click != null)
             {
+
+                int id;
                 //ToDo: Need something for ID here
+                //Todo:LOOK HERE
                 Customer customer = new Customer();
+
                 customer.FirstName = txtFirstName.Text;
                 customer.LastName = txtLastName.Text;
                 customer.SSN = txtSSN.Text;
-                customer.DateOfBirth = DateTime.Parse(txtBirthDate.Text);
-                customers.Add(customer);
-                RebindCustomers();
+
+                if(DateTime.TryParse(txtBirthDate.Text, out  DateTime dt)) 
+                {
+                    customer.DateOfBirth = dt;
+                    customers.Add(customer);
+                    RebindCustomers();
+                }
+                else
+                {
+                    MessageBox.Show("Invalid Input for Birthdate (YYYY/MM/DD)");
+                }
+
             }
         }
 

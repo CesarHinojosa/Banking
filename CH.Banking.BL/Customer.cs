@@ -12,7 +12,7 @@ namespace CH.Banking.BL
     public class Customer : Person
     {
         //I just created hardcorded ID's for everyone
-        //todo: must change hardcoded IDS when we create database in class
+        
         public int CustomerID { get; set; }
 
         //added this here because each customer has withdrawals and deposits

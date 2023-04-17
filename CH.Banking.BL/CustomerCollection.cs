@@ -15,6 +15,23 @@ namespace CH.Banking.BL
         {
             DataAccess.XMLFilePath = "customers.xml";
         }
+
+        public int GetNextID()
+        {
+            int nextID = 1;
+
+            if (this.Count > 0) 
+            {
+                nextID = this.Last().CustomerID + 1;
+            }
+            if(this.Count < 0) 
+            {
+                nextID = this.Last().CustomerID + 1;
+                this.Add(new Customer { CustomerID = nextID });
+            }
+
+            return nextID;
+        }
         public void LoadTestCustomers()
         {
 
@@ -24,8 +41,9 @@ namespace CH.Banking.BL
             Customer customer;
 
             customer = new Customer();
-            //customer.CustomerID = 1;
 
+            customer.CustomerID = GetNextID();
+           
             customer.FirstName = "Cesar";
             customer.LastName = "Hinojosa";
             customer.SSN = "123-45-6789";
@@ -44,8 +62,8 @@ namespace CH.Banking.BL
             Add(customer);
 
             customer = new Customer();
-            //customer.CustomerID = 2;
-
+            
+            customer.CustomerID = GetNextID();
             customer.FirstName = "Clark";
             customer.LastName = "Kent";
             customer.SSN = "987-65-4321";
@@ -64,8 +82,9 @@ namespace CH.Banking.BL
             Add(customer);
 
             customer = new Customer();
-            //customer.CustomerID = 3;
+            
 
+            customer.CustomerID = GetNextID();
             customer.FirstName = "Bruce";
             customer.LastName = "Wayne";
             customer.SSN = "111-22-3333";
