@@ -11,13 +11,16 @@ namespace CH.Banking.UI
         public Form1()
         {
             InitializeComponent();
+            customers.LoadFromDB();
 
-            customers.LoadTestCustomers();
+            // customers.LoadTestCustomers();
 
             if (customers.Count > 0)
             {
                 RebindCustomers();
             }
+
+
         }
         public bool NewPerson = false;
 
@@ -55,7 +58,8 @@ namespace CH.Banking.UI
                 txtSSN.Text = selectedCustomer.SSN;
                 txtBirthDate.Text = selectedCustomer.DateOfBirth.ToString("yyyy-MM-dd");
                 txtAge.Text = selectedCustomer.Age.ToString();
-
+                selectedCustomer.LoadWithdrawalsFromDB();
+                selectedCustomer.LoadDepositsFromDB();
                 //adds the financial information when the selected customer is selected
                 //this is what populates the DGV down below when the customer is selected 
                 RebindFinancial(selectedCustomer.Withdrawals, selectedCustomer.Deposit);
@@ -75,13 +79,13 @@ namespace CH.Banking.UI
                 selectedCustomer.LastName = txtLastName.Text;
                 selectedCustomer.SSN = txtSSN.Text;
                 selectedCustomer.DateOfBirth = DateTime.Parse(txtBirthDate.Text);
-
+                
+                selectedCustomer.UpdateDB();
+               
                 RebindCustomers();
             }
             else if (btnNew_Click != null)
             {
-
-                int id;
                 //ToDo: Need something for ID here
                 //Todo:LOOK HERE
                 Customer customer = new Customer();
@@ -94,6 +98,7 @@ namespace CH.Banking.UI
                 {
                     customer.DateOfBirth = dt;
                     customers.Add(customer);
+                    customer.InsertIntoDB();
                     RebindCustomers();
                 }
                 else
@@ -159,6 +164,7 @@ namespace CH.Banking.UI
                     txtAge.Text = "";
                     customers.Remove(selectedCustomer);
                     //rebinds the list so that the deleted customer does not show up anymore
+                    selectedCustomer.DeleteFromDB();
                     RebindCustomers();
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,15 @@ namespace CH.Banking.BL
             ID = id;
             Amount = amount;
             Date = date;
+        }
+
+        public Deposit(DataRow depositRow)
+        {
+            ID = Convert.ToInt32(depositRow["ID"]);
+            Amount = Convert.ToDouble(depositRow["Amount"])!;
+            Date = Convert.ToDateTime(depositRow["Date"])!;
+            //the one in quotation is the one pulling into the database 
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CH.Banking.PL;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,24 +15,10 @@ namespace CH.Banking.BL
         public CustomerCollection() 
         {
             DataAccess.XMLFilePath = "customers.xml";
+            DataAccess.ConnectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CH.Banking;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         }
 
-        public int GetNextID()
-        {
-            int nextID = 1;
-
-            if (this.Count > 0) 
-            {
-                nextID = this.Last().CustomerID + 1;
-            }
-            if(this.Count < 0) 
-            {
-                nextID = this.Last().CustomerID + 1;
-                this.Add(new Customer { CustomerID = nextID });
-            }
-
-            return nextID;
-        }
+        
         public void LoadTestCustomers()
         {
 
@@ -42,8 +29,8 @@ namespace CH.Banking.BL
 
             customer = new Customer();
 
-            customer.CustomerID = GetNextID();
            
+
             customer.FirstName = "Cesar";
             customer.LastName = "Hinojosa";
             customer.SSN = "123-45-6789";
@@ -51,7 +38,7 @@ namespace CH.Banking.BL
 
             //needed the new Datetime in order for the constructor to not think that I was adding several constructors 
 
-            customer.Withdrawals.Add(new Withdrawal(4, 452.25, new DateTime(2022,5,10) ));
+            customer.Withdrawals.Add(new Withdrawal(4, 452.25, new DateTime(2022, 5, 10)));
             customer.Withdrawals.Add(new Withdrawal(5, 5000, new DateTime(2023, 4, 1)));
             customer.Withdrawals.Add(new Withdrawal(6, 2351.33, new DateTime(2023, 3, 9)));
 
@@ -62,8 +49,8 @@ namespace CH.Banking.BL
             Add(customer);
 
             customer = new Customer();
+
             
-            customer.CustomerID = GetNextID();
             customer.FirstName = "Clark";
             customer.LastName = "Kent";
             customer.SSN = "987-65-4321";
@@ -82,9 +69,9 @@ namespace CH.Banking.BL
             Add(customer);
 
             customer = new Customer();
-            
 
-            customer.CustomerID = GetNextID();
+
+            
             customer.FirstName = "Bruce";
             customer.LastName = "Wayne";
             customer.SSN = "111-22-3333";
@@ -96,21 +83,52 @@ namespace CH.Banking.BL
             customer.Withdrawals.Add(new Withdrawal(2, 8045.25, new DateTime(2023, 3, 18)));
             customer.Withdrawals.Add(new Withdrawal(3, 10250.55, new DateTime(2023, 3, 19)));
 
-            customer.Deposit.Add(new Deposit(16, 6500, new DateTime(2023, 3,20)));
+            customer.Deposit.Add(new Deposit(16, 6500, new DateTime(2023, 3, 20)));
             customer.Deposit.Add(new Deposit(17, 80000, new DateTime(2023, 3, 21)));
             customer.Deposit.Add(new Deposit(18, 78000, new DateTime(2023, 3, 22)));
 
             Add(customer);
         }
 
+      
+        //DataBase stuff
+
+        public void LoadFromDB()
+        {
+            string sql = "SELECT * FROM Customers";
+            DataTable table = DataAccess.SelectFromDB(sql);
+            foreach (DataRow row in table.Rows)
+            {
+                //would work
+                //Customer customer = new Customer(row);
+                //Add(customer);
+                Add(new Customer(row));
+            }
+        }
+
+
+
         public void SaveToXML()
         {
-            // this part (  typeof(CustomerCollection) ) is the type of object we want to save to XML
-
-            // the (this) keyword is saying the acutal object we are saving
-
-            //"save the current instance of this class (whatever class this code is in) to XML, using the CustomerCollection class as the type of object to save".
             DataAccess.SaveXML(typeof(CustomerCollection), this);
         }
+
+
+        //public int GetNextID()
+        //{
+        //    int nextID = 1;
+
+        //    if (this.Count > 0) 
+        //    {
+        //        nextID = this.Last().CustomerID + 1;
+        //    }
+        //    if(this.Count < 0) 
+        //    {
+        //        nextID = this.Last().CustomerID + 1;
+        //        this.Add(new Customer { CustomerID = nextID });
+        //    }
+
+        //    return nextID;
+        //}
     }
 }
